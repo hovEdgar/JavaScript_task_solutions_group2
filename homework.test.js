@@ -4,7 +4,7 @@
  * Create a function that builds a tree like object given an array with object which contains parent and id properties.
  */
 
-const treeNodes = [
+const arr = [
     {parent: null, id: 0},
     {parent: 0, id: 1},
     {parent: 0, id: 2},
@@ -13,6 +13,28 @@ const treeNodes = [
     {parent: 2, id: 5},
     {parent: 4, id: 6},
 ];
+
+let obj = arr.reduce((p, c) => {
+    if(c.parent === null) {
+        p[c.id] = {};
+    } else if (p[c.parent]) {
+        p[c.parent][c.id] = {};
+    }
+    return p;
+}, {});
+
+let obj2 = arr.reduce((p, c) => {
+    if(c.parent === null) {
+        p[c.id] = {};
+    } else if (p[c.parent]) {
+        p[c.parent][c.id] = {};
+    }
+    return obj["0"];
+}, {});
+
+console.log(obj2);
+
+
 
 /**
  * Task 2
@@ -27,6 +49,8 @@ describe("possible subsets from array", () => {
 
         function possibleSubsets(array, n) {
 
+                // couldn't write this one;
+
         }
 
         expect(possibleSubsets([1, 2, 3, 4], 2))
@@ -40,8 +64,8 @@ describe("possible subsets from array", () => {
                 [2,3,4], [2,3,5], [2,4,5],
                 [3,4,5]
             ]);
-    })
-})
+    });
+});
 
 
 /**
@@ -49,7 +73,7 @@ describe("possible subsets from array", () => {
  *
  * Write a recursive function to determine whether all digits of the number are odd or not.
  */
-describe("odd numbers", () => {
+describe("odd numbers without recursion", () => {
     test("tests for task N3", () => {
 
         function oddDigits(num) {
@@ -60,7 +84,26 @@ describe("odd numbers", () => {
         expect(oddDigits(4211133)).toBeFalsy();
         expect(oddDigits(5)).toBeTruthy();
     })
-})
+
+    test("tests func with recursion for task N3", () => {
+
+        function oddDigitsRec(num) {
+           if (String(num)[0] % 2 == 0) {
+               return false;
+           }
+           if (String(num).length === 1) {
+               return true;
+           } else {
+               let arg = String(num).slice(1);
+               return oddDigitsRec(+arg);
+           }
+        }
+
+        expect(oddDigitsRec(771)).toBeTruthy();
+        expect(oddDigitsRec(4211)).toBeFalsy();
+        expect(oddDigitsRec(1)).toBeTruthy();
+    });
+});
 
 /**
  * Task 4
@@ -84,6 +127,31 @@ describe("find smallest positive number", () => {
         expect(smallestPositiveNum([56, -9, 87, -23, 0, -105, 55, 1])).toEqual(0);
         expect(smallestPositiveNum([45, -9, 15, 5, -78])).toEqual(5);
         expect(smallestPositiveNum([-5, -9, -111, -1000, -7])).toEqual(-1);
-    })
-})
+    });
+});
 
+/**
+ * Task N5
+ *
+ * Writ the decorator which will run only once during given  "ms" as argument
+ */
+
+function first(a, b) {
+    return a + b;
+}
+
+function decorator(wrapper, ms) {
+    let active = true;
+    function innerFunc(...rest) {
+        if (active) {
+            active = false;
+            setTimeout(() => active = true, ms);
+            return wrapper.apply(this, rest);
+        }
+    }
+    return innerFunc;
+}
+
+let args = decorator(first, 5000);
+
+args(20, 7);
