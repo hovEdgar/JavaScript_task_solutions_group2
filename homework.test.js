@@ -14,25 +14,16 @@ const arr = [
     {parent: 4, id: 6},
 ];
 
-let obj = arr.reduce((p, c) => {
-    if(c.parent === null) {
-        p[c.id] = {};
-    } else if (p[c.parent]) {
-        p[c.parent][c.id] = {};
-    }
-    return p;
-}, {});
+function makeTreeNodes(arr, parent = null) {
+    return arr.reduce((prev, cur) => {
+        if (cur.parent === parent) {
+            prev[cur.id] = makeTreeNodes(arr, cur.id);
+        }
+        return prev;
+    }, {})
+}
 
-let obj2 = arr.reduce((p, c) => {
-    if(c.parent === null) {
-        p[c.id] = {};
-    } else if (p[c.parent]) {
-        p[c.parent][c.id] = {};
-    }
-    return obj["0"];
-}, {});
-
-console.log(obj2);
+console.log(makeTreeNodes(arr));
 
 
 
@@ -44,29 +35,7 @@ console.log(obj2);
  */
 
 
-describe("possible subsets from array", () => {
-    test("tests for task N2", () => {
-
-        function possibleSubsets(array, n) {
-
-                // couldn't write this one;
-
-        }
-
-        expect(possibleSubsets([1, 2, 3, 4], 2))
-            .toEqual([ [1, 2],  [1, 3],  [1, 4],  [2, 3],  [2, 4],  [3, 4] ]);
-        expect(possibleSubsets([1, 2, 3, 4], 3))
-            .toEqual([ [1, 2, 3],  [1, 2, 4],  [1, 3, 4],  [2, 3, 4] ]);
-        expect(possibleSubsets([1, 2, 3, 4, 5], 3))
-            .toEqual([
-                [1,2,3],  [1,2,4],  [1,2,5],
-                [1,3,4],  [1,3,5], [1,4,5],
-                [2,3,4], [2,3,5], [2,4,5],
-                [3,4,5]
-            ]);
-    });
-});
-
+ // this task moved to the next homework;
 
 /**
  * Task 3
@@ -130,28 +99,3 @@ describe("find smallest positive number", () => {
     });
 });
 
-/**
- * Task N5
- *
- * Writ the decorator which will run only once during given  "ms" as argument
- */
-
-function first(a, b) {
-    return a + b;
-}
-
-function decorator(wrapper, ms) {
-    let active = true;
-    function innerFunc(...rest) {
-        if (active) {
-            active = false;
-            setTimeout(() => active = true, ms);
-            return wrapper.apply(this, rest);
-        }
-    }
-    return innerFunc;
-}
-
-let args = decorator(first, 5000);
-
-args(20, 7);
