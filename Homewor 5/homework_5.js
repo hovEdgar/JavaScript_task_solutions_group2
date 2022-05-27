@@ -43,7 +43,17 @@ log(makeTreeFromNodes(treeNodes));
  * Assume that all elements in the array are unique.
  */
 
-/////
+function findSequence(arr =[], k = 0, ind = 0) {
+    if (k === 0) { return [[]]; }
+    const res = [];
+    for (let i = ind; i <= arr.length - k; i ++) {
+        const r = findSequence(arr, k-1, i+1);
+        r.forEach(a => res.push([arr[i], ...a]));
+    }
+    return res;
+}
+
+console.log(findSequence([1,2,3,4], 3, 0))
 
 
 /**
