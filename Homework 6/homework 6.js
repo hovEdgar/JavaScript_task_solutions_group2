@@ -78,6 +78,7 @@ function getArrayFromTree(obj, arr = []) {
 
 console.log(getArrayFromTree(objTree));
 
+
 /**
  * Homework 6
  *
@@ -85,6 +86,43 @@ console.log(getArrayFromTree(objTree));
  *
  * Implement binary search.
  * First you need to research binary search WITHOUT the implementation itself.
+ */
+
+let arr = [10, 5, 12, -2, 101];
+
+function binarySearchImplement(array, value) {
+    let start = 0;
+    let end = array.length - 1;
+    let index = null;
+
+    let sorted = array.sort((a, b) => a - b);
+
+    while (start <= end) {
+        index = Math.round((end - start) / 2) + start;
+
+        if (value === sorted[index]) {
+            return `Index of value is: ${index}`;
+        }
+        if (value < sorted[index]) {
+            end = --index;
+        } else {
+            start = ++index;
+        }
+    }
+    return "Not found";
+}
+
+
+console.log(binarySearchImplement(arr, 2)) // Should return 'Not found'
+console.log(binarySearchImplement(arr, -2)) // Should return: 0 => the index of -2
+
+
+/**
+ * Homework 6
+ *
+ * Task 3
+ *
+ * Implement binary tree search.
  */
 
 // there is a many ways to do binary tree search
@@ -144,7 +182,6 @@ function findValue(obj, value) {
 
 console.log(findValue(obj, "apple")); // should return true
 console.log(findValue(obj, 27)); // should return false
-
 
 
 /**
